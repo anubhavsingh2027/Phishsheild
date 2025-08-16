@@ -140,6 +140,10 @@ app.get('/', (req, res) => {
   }
 });
 
+app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'public/about.html')));
+app.get('/feedback', (req, res) => res.sendFile(path.join(__dirname, 'public/contact.html')));
+
+
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public/login.html')));
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'public/register.html')));
 
@@ -192,4 +196,5 @@ app.use((req, res) => res.status(404).sendFile(path.join(__dirname, 'public/erro
 
 // ===== Start server =====
 app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));
+
 
