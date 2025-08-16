@@ -15,6 +15,7 @@ import rateLimit from 'express-rate-limit';
 
 dotenv.config();
 
+
 // Fix __filename and __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -22,6 +23,8 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust first proxy for Render
+app.set('trust proxy', 1);
 // ===== Middleware =====
 app.use(cors());
 app.use(express.json());
@@ -109,9 +112,13 @@ app.post('/api/scan', scanLimiter, async (req, res) => {
 });
 
 // ===== MongoDB connection =====
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ MongoDB connected successfully.'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('✅ MongoDB connected successfully.'))
+.catch(err => console.error('❌ MongoDB connection error:', err));
+
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -185,3 +192,4 @@ app.use((req, res) => res.status(404).sendFile(path.join(__dirname, 'public/erro
 
 // ===== Start server =====
 app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));
+
