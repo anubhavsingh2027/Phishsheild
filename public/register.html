@@ -47,12 +47,21 @@
     </div>
   </div>
   <script>
+
 document.getElementById('register-form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const username = e.target.username.value;
   const email = e.target.email.value;
   const password = e.target.password.value;
+  const confirm_password = e.target.confirm_password.value;
+if (password !== confirm_password) {
+  const msg = document.getElementById('register-message');
+   msg.style.color = 'red';
+    msg.textContent = 'Passwords do not match';
+    e.target.confirm_password.value="";
+  return res.status(400).json({ error: 'Passwords do not match' });
+}
 
   const res = await fetch('/register', {
     method: 'POST',
@@ -75,3 +84,4 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
 </script>
 </body>
 </html>
+
