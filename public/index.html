@@ -87,19 +87,8 @@
   <footer>
     <p>&copy; 2025 PhishShield </p>
   </footer>
-<script>
-    // Check if redirect has already happened
-    if (!localStorage.getItem('redirectDone')) {
-      // Set a 1-minute timer for redirect
-      setTimeout(() => {
-        localStorage.setItem('redirectDone', 'true'); // Mark redirect as done
-        window.location.href = "/login"; // Redirect to login page
-      }, 6000);
-    } else {
-      // Already redirected before
-      document.getElementById('info').textContent = "You have already visited before. No redirect.";
-    }
-  </script>
+
+
 
   <script src="script.js"></script>
 </body>
