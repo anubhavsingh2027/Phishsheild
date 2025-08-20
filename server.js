@@ -1,5 +1,5 @@
 // server.js
-import express from 'express';
+import express, { urlencoded } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -12,9 +12,9 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import axios from 'axios';
 import rateLimit from 'express-rate-limit';
-
+import { url } from 'inspector';
+import nodemailer from "nodemailer";
 dotenv.config();
-
 
 // Fix __filename and __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -23,8 +23,6 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Trust first proxy for Render
-app.set('trust proxy', 1);
 // ===== Middleware =====
 app.use(cors());
 app.use(express.json());
@@ -112,13 +110,9 @@ app.post('/api/scan', scanLimiter, async (req, res) => {
 });
 
 // ===== MongoDB connection =====
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('✅ MongoDB connected successfully.'))
-.catch(err => console.error('❌ MongoDB connection error:', err));
-
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('✅ MongoDB connected successfully.'))
+  .catch(err => console.error('❌ MongoDB connection error:', err));
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -146,10 +140,10 @@ app.get('/feedback', (req, res) => res.sendFile(path.join(__dirname, 'public/con
 
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'public/login.html')));
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'public/register.html')));
-
 app.post('/register', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, confirm_password } = req.body;
+    
     if (!username || !email || !password) return res.status(400).json({ error: 'All fields are required' });
 
     const existing = await User.findOne({ email });
@@ -191,10 +185,46 @@ app.get('/logout', (req, res) => {
   req.session.destroy(() => res.redirect('/login'));
 });
 
+//  otp verification
+
+
+app.post("/send-otp", async (req, res) => {
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res.status(400).json({ error: "Email and OTP are required" });
+  }
+
+  try {
+    // ✅ OTP transporter
+    const otpTransporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // STARTTLS
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS, // App password
+      },
+    });
+
+    await otpTransporter.sendMail({
+      from: `"PhishShield OTP" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: "Your OTP Code",
+      text: `Here is your OTP: ${otp}\n\nThis OTP will expire in 5 minutes.`,
+    });
+
+    res.json({ message: "OTP sent successfully to " + email });
+  } catch (err) {
+    console.error("❌ OTP Email send failed:", err);
+    res.status(500).json({ error: "Failed to send OTP" });
+  }
+});
+
+
+
 // ===== 404 handler =====
 app.use((req, res) => res.status(404).sendFile(path.join(__dirname, 'public/error.html')));
 
 // ===== Start server =====
 app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));
-
-
