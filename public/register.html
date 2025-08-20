@@ -32,9 +32,24 @@
   <div class="input-group">
     <input type="password" id="confirm-password" name="confirm_password" placeholder="Confirm Password" required>
   </div>
+
+  <!-- otp verification -->
+
+  <!-- Add this inside your form -->
+<div class="input-group">
+  <input type="text" id="code" name="code" placeholder="Enter the code" required>
+</div>
+<button type="button" id="getCodeBtn" class="register-btn"
+  style="background: linear-gradient(45deg, rgb(107, 205, 151), rgb(2, 254, 36));">
+  Get Code
+</button>
+
+
+
   <div class="action-buttons">
     <button type="submit" class="register-btn">Register</button>
   </div>
+
   <p class="already-have-account">Already have an account? <a href="/login" class="toggle-form">Login</a></p>
   <div class="message_center_account">
     <p id="register-message"></p>
@@ -46,8 +61,66 @@
       </div>
     </div>
   </div>
-  <script>
+    <script>
+const a = [
+  1234, 8988, 2332, 223, 3489, 6721, 9154, 4820, 7391, 5602,
+  8417, 2935, 6748, 9182, 4376, 8093, 5264, 7629, 1845, 9501,
+  3648, 7032, 8456, 1927, 6193, 7408, 8251, 9037, 4826, 6579,
+  3182, 7945, 5607, 8724, 2398, 6812, 9053, 7419, 3642, 8205,
+  5391, 6784, 9132, 4528, 7963, 2841, 6375, 9821, 7504, 3159,
+  4682, 9027, 5941, 8176, 2634, 7492, 8365, 9218, 4712, 8369,
+  2905, 7148, 9632, 5087, 6274, 8195, 3746, 9510, 4269, 7853,
+  6024, 8397, 9172, 5482, 7631, 2948, 6809, 8306
+];
 
+function getRandomValue(arr) {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
+
+let generated_code = null;
+
+// Send OTP on Get Code click
+// Send OTP on Get Code click
+document.getElementById('getCodeBtn').addEventListener('click', async () => {
+  const email = document.getElementById('email').value;
+  const msg = document.getElementById('register-message');
+
+  if (!email) {
+    msg.style.color = 'red';
+    msg.textContent = 'Please enter your email id';
+    return;
+  }
+
+  // Show sending... while waiting
+  msg.style.color = 'blue';
+  msg.textContent = 'Sending...';
+
+  generated_code = getRandomValue(a);
+
+  try {
+    const res = await fetch('/send-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, otp: generated_code })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      msg.style.color = 'green';
+      msg.textContent = 'OTP sent! Check your email inbox or Spam box if exist .';
+    } else {
+      msg.style.color = 'red';
+      msg.textContent = data.error || 'Failed to send OTP. Please try again.';
+    }
+  } catch (error) {
+    msg.style.color = 'red';
+    msg.textContent = 'Network error. Please try again later.';
+  }
+});
+
+// Register form submit
 document.getElementById('register-form').addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -55,13 +128,25 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   const email = e.target.email.value;
   const password = e.target.password.value;
   const confirm_password = e.target.confirm_password.value;
-if (password !== confirm_password) {
-  const msg = document.getElementById('register-message');
+  const code = e.target.code.value;
+
+  if (password !== confirm_password) {
+     const msg = document.getElementById('register-message');
    msg.style.color = 'red';
     msg.textContent = 'Passwords do not match';
     e.target.confirm_password.value="";
-  return res.status(400).json({ error: 'Passwords do not match' });
+ 
+    return;
+  }
+
+  if (code !== String(generated_code)) {
+  const msg = document.getElementById('register-message');
+  msg.style.color = 'red';
+  msg.textContent = 'Invalid OTP. Please try again.';
+  e.target.code.value = ""; 
+  return;
 }
+
 
   const res = await fetch('/register', {
     method: 'POST',
@@ -70,18 +155,18 @@ if (password !== confirm_password) {
   });
 
   const data = await res.json();
-  const msg = document.getElementById('register-message');
-
   if (res.ok) {
-    msg.style.color = 'green';
-    msg.textContent = data.message;
-    setTimeout(() => window.location.href = '/login', 1000);
+     const msg = document.getElementById('register-message');
+   msg.style.color = 'green';
+    msg.textContent = ' Registration successful!';
+    window.location.href = '/login';
   } else {
-    msg.style.color = 'red';
+     const msg = document.getElementById('register-message');
+   msg.style.color = 'red';
     msg.textContent = data.error;
+    
   }
 });
 </script>
 </body>
 </html>
-
