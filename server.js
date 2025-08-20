@@ -12,7 +12,6 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import axios from 'axios';
 import rateLimit from 'express-rate-limit';
-import { url } from 'inspector';
 import nodemailer from "nodemailer";
 dotenv.config();
 
@@ -39,7 +38,7 @@ app.use(
 );
 
 // ===== Serve static files =====
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), { index: false }));
 
 // ===== Contact form endpoint =====
 app.post('/api/contact', async (req, res) => {
@@ -126,13 +125,15 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // ===== Auth routes =====
-app.get('/', (req, res) => {
-  if (req.session.userId) {
-    res.sendFile(path.join(__dirname, 'public/index.html'));
-  } else {
-    res.redirect('/login');
-  }
+function requireLogin(req, res, next) {
+  if (req.session && req.session.userId) return next();
+  return res.redirect('/login');
+}
+
+app.get('/', requireLogin, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
+
 
 app.get('/about', (req, res) => res.sendFile(path.join(__dirname, 'public/about.html')));
 app.get('/feedback', (req, res) => res.sendFile(path.join(__dirname, 'public/contact.html')));
