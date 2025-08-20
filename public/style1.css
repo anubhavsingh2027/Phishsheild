@@ -515,3 +515,9 @@ footer {
   display: flex;
   justify-content: center;
 }
+
+@media (max-width: 540px) {
+#login-content{
+  padding: 10px;
+}
+}
