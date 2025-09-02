@@ -35,38 +35,66 @@ transporter.verify((error) => {
  * @param {string} param0.message
  */
 export async function sendFeedbackEmail({ name, email, subject, message }) {
-  const adminMailOptions = {
-    from: email,
-    to: process.env.GMAIL_USER,
-    subject: `New PhishShield Feedback by ${name}`,
-    text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\nFeedback: ${message}`,
-  };
+  try {
+    // Admin notification
+    const adminMailOptions = {
+      from: `"PhishShield Feedback" <${process.env.GMAIL_USER}>`,
+      to: process.env.GMAIL_USER,
+      subject: `🐟 New PhishShield Feedback by ${name}`,
+      html: `
+        <div style="font-family:Arial,sans-serif; padding:20px; border:1px solid #eee; border-radius:10px; max-width:600px; margin:auto;">
+          <h2 style="color:#e63946;">📩 New Feedback Received</h2>
+          <p><b>Name:</b> ${name}</p>
+          <p><b>Email:</b> ${email}</p>
+          <p><b>Subject:</b> ${subject}</p>
+          <p><b>Message:</b></p>
+          <blockquote style="background:#f8f9fa; padding:10px; border-left:4px solid #e63946; color:#333;">
+            ${message}
+          </blockquote>
+          <p style="font-size:12px; color:#777;">PhishShield Admin Panel</p>
+        </div>
+      `,
+    };
 
-  const userMailOptions = {
-    from: `"PhishShield Team" <${process.env.GMAIL_USER}>`,
-    to: email,
-    subject: 'Thank you for Feedback PhishShield!',
-    text: `Hi ${name},
+    // User confirmation
+    const userMailOptions = {
+      from: `"PhishShield Team" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: '✅ Thank you for your Feedback - PhishShield',
+      html: `
+        <div style="font-family:Arial,sans-serif; padding:20px; border:1px solid #eee; border-radius:10px; max-width:600px; margin:auto;">
+          <div style="text-align:center;">
+            <img src="https://i.ibb.co/4tW4tQY/shield.png" alt="PhishShield Logo" style="width:80px;"/>
+            <h2 style="color:#1d3557;">Thank You, ${name}!</h2>
+          </div>
+          <p style="font-size:16px; color:#333;">
+            We’ve successfully received your feedback. Our team will review it and get back to you if needed.
+          </p>
+          <h3 style="color:#457b9d;">📝 Your Submitted Feedback:</h3>
+          <ul style="line-height:1.6; color:#444;">
+            <li><b>Name:</b> ${name}</li>
+            <li><b>Email:</b> ${email}</li>
+            <li><b>Subject:</b> ${subject}</li>
+            <li><b>Message:</b> ${message}</li>
+          </ul>
+          <p style="font-size:14px; color:#555; margin-top:20px;">
+            👉 Need more help? Visit our 
+            <a href="https://phishshield.com/help" style="color:#e63946; text-decoration:none;">Help Center</a> 
+            or reply to this email.
+          </p>
+          <p style="font-size:13px; color:#777; text-align:center; margin-top:30px;">
+            © ${new Date().getFullYear()} PhishShield. Developed by <b>Anubhav Singh</b>.
+          </p>
+        </div>
+      `,
+    };
 
-Thank you for your valuable feedback! We have successfully received your message and our team will get back to you shortly.
+    // Send both mails
+    await transporter.sendMail(adminMailOptions);
+    await transporter.sendMail(userMailOptions);
 
-Here’s a copy of the message you submitted:
-
-Name: ${name}
-Email: ${email}
-Subject: ${subject}
-Message: ${message}
-
-We appreciate your input—it helps us improve PhishShield to better protect and educate users like you.
-
-If you need any further assistance, feel free to reach out to us at anubhavsingh2027@gmail.com.
-
-Best regards,  
-PhishShield Team  
-Developer: Anubhav Singh
-`,
-  };
-
-  await transporter.sendMail(adminMailOptions);
-  await transporter.sendMail(userMailOptions);
+    console.log(`📧 Feedback email sent to admin & user (${email})`);
+  } catch (error) {
+    console.error('❌ Error sending feedback emails:', error);
+  }
 }
