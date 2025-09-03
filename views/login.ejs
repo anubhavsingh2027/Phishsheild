@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+  <!-- <link rel="stylesheet" href="/style1.css" /> -->
+  <link rel="stylesheet" href="/style2.css">
+  
+</head>
+<body>
+ 
+     <div class="login_and_register_logo">
+      <img class="logo" src="/image/logo.png" alt="logo">
+     </div>
+   
+  <div class="auth-container">
+    <div class="auth-box">
+      <!-- Login Form -->
+      <div class="form login-form">
+        <h1>Login</h1>
+        <form id="login-form" method="POST" action="/login">
+          <div class="input-group">
+            <input type="email" id="username" name="email" placeholder="Email" required>
+          </div>
+          <div class="input-group">
+            <input type="password" id="password" name="password" placeholder="Password" required>
+          </div>
+          <div class="action-buttons">
+            <button type="submit" class="login-btn">Login</button>
+            
+            <p class="forgot-password">Forgot password?</p>
+          </div>
+          <p class="no-account">Don't have an account? <a href="/register" class="toggle-form">Register</a></p>
+          <div class="message_center_account">
+            <p id="login-message"></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault(); // prevent page reload
+
+  const email = e.target.email.value;
+  const password = e.target.password.value;
+
+  const res = await fetch('/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password })
+  });
+
+  const data = await res.json();
+
+  const messageEl = document.getElementById('login-message');
+
+  if (res.ok) {
+    messageEl.style.color = 'green';
+    messageEl.textContent = 'Login successful!';
+    // optionally redirect after 1-2 seconds
+    setTimeout(() => window.location.href = '/', 1000);
+  } else {
+    messageEl.style.color = 'red';
+    messageEl.textContent = data.error || 'Login failed';
+  }
+});
+</script>
+</body>
+</html>
