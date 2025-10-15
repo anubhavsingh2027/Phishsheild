@@ -1,47 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // ===== Auto-resize textarea =====
-  const messageTextarea = document.getElementById('message');
-  if (messageTextarea) {
-    messageTextarea.addEventListener('input', function () {
-      this.style.height = 'auto';
-      this.style.height = (this.scrollHeight) + 'px';
-    });
-  }
-
-  // ===== Contact Form =====
-  const contactForm = document.getElementById('contactForm');
-  const loadingSpinner = document.getElementById('loadingSpinner');
-
-  if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const subject = document.getElementById('subject').value.trim();
-      const message = document.getElementById('message').value.trim();
-
-      loadingSpinner.style.display = 'block'; // Show spinner
-
-      try {
-        const res = await fetch('/api/contact', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email, subject, message }),
-        });
-
-        const data = await res.json();
-        if (res.ok) {
-          contactForm.reset();
-        } 
-      } catch (error) {
-        console.error(error);
-      } finally {
-        loadingSpinner.style.display = 'none'; // Hide spinner
-      }
-    });
-  }
-});
 
 
 // Enhanced PhishShield - Premium Cybersecurity Application
@@ -53,13 +9,13 @@ class PhishShieldPremium {
         this.analysisHistory = [];
         this.activeTab = 'overview';
         this.mobileMenuOpen = false;
-        
+
         // Application data
         this.data = {
             safe_domains: ["google.com", "microsoft.com", "github.com", "stackoverflow.com", "mozilla.org", "w3schools.com", "tailwindcss.com", "apple.com", "amazon.com", "facebook.com", "twitter.com", "linkedin.com", "youtube.com", "netflix.com", "instagram.com"],
             suspicious_domains: ["bit.ly", "tinyurl.com", "t.co", "goo.gl", "ow.ly", "short.link", "rebrand.ly"],
             malicious_patterns: [
-                "g00gle", "micr0soft", "payp4l", "amaz0n", "faceb00k", "twitt3r", 
+                "g00gle", "micr0soft", "payp4l", "amaz0n", "faceb00k", "twitt3r",
                 "appl3", "netfIix", "inst4gram", "linked1n", "yah00", "gmai1",
                 "g0ogle", "microsft", "paypal-", "amazn", "facebbok", "twiitter",
                 "gooogle", "microsooft", "paaypal", "amaazn", "faceebook"
@@ -74,7 +30,7 @@ class PhishShieldPremium {
                     icon: "🛡️"
                 },
                 suspicious: {
-                    color: "yellow", 
+                    color: "yellow",
                     message: "This URL has suspicious characteristics",
                     confidence: 75,
                     risk_score: 65,
@@ -82,7 +38,7 @@ class PhishShieldPremium {
                 },
                 malicious: {
                     color: "red",
-                    message: "This URL appears to be malicious", 
+                    message: "This URL appears to be malicious",
                     confidence: 90,
                     risk_score: 90,
                     icon: "🚨"
@@ -139,7 +95,7 @@ class PhishShieldPremium {
 
     initializeElements() {
         console.log('Initializing premium elements...');
-        
+
         this.elements = {
             // Navigation
             navbar: document.getElementById('premiumNav'),
@@ -321,7 +277,7 @@ this.elements.navLinks.forEach((link, index) => {
 
     applyTheme(animate = true) {
         const root = document.documentElement;
-        
+
         if (animate) {
             root.style.transition = 'color 0.3s ease, background-color 0.3s ease';
         }
@@ -360,7 +316,7 @@ this.elements.navLinks.forEach((link, index) => {
         if (section) {
             const navbarHeight = this.elements.navbar?.offsetHeight || 80;
             const targetPosition = section.offsetTop - navbarHeight;
-            
+
             window.scrollTo({
                 top: targetPosition,
                 behavior: 'smooth'
@@ -377,11 +333,11 @@ this.elements.navLinks.forEach((link, index) => {
 
     toggleMobileMenu() {
         this.mobileMenuOpen = !this.mobileMenuOpen;
-        
+
         if (this.elements.mobileMenuBtn) {
             this.elements.mobileMenuBtn.classList.toggle('active', this.mobileMenuOpen);
         }
-        
+
         if (this.elements.navLinksContainer) {
             this.elements.navLinksContainer.classList.toggle('active', this.mobileMenuOpen);
         }
@@ -413,7 +369,7 @@ this.elements.navLinks.forEach((link, index) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.style.animationPlayState = 'running';
-                    
+
                     // Update active nav link
                     const sectionId = entry.target.id;
                     if (sectionId) {
@@ -437,14 +393,14 @@ this.elements.navLinks.forEach((link, index) => {
             let current = 0;
             const increment = target / 100;
             const suffix = stat.textContent.replace(/[0-9.]/g, '');
-            
+
             const timer = setInterval(() => {
                 current += increment;
                 if (current >= target) {
                     current = target;
                     clearInterval(timer);
                 }
-                
+
                 if (target >= 1000000) {
                     stat.textContent = (current / 1000000).toFixed(1) + 'M' + suffix.replace('0', '');
                 } else if (target >= 1000) {
@@ -461,7 +417,7 @@ this.elements.navLinks.forEach((link, index) => {
     // Magnetic Effects
     setupMagneticEffects() {
         const magneticElements = document.querySelectorAll('.hero-cta-primary, .cta-login-btn, .analyze-btn');
-        
+
         magneticElements.forEach(element => {
             element.addEventListener('mousemove', (e) => {
                 this.updateMagneticEffect(e, element);
@@ -477,13 +433,13 @@ this.elements.navLinks.forEach((link, index) => {
         const rect = element.getBoundingClientRect();
         const x = e.clientX - rect.left - rect.width / 2;
         const y = e.clientY - rect.top - rect.height / 2;
-        
+
         const magneticField = element.querySelector('.magnetic-field, .cta-energy');
         if (magneticField) {
             const strength = 0.3;
             magneticField.style.transform = `translate(${x * strength}px, ${y * strength}px)`;
         }
-        
+
         element.style.transform = `translate(${x * 0.1}px, ${y * 0.1}px)`;
     }
 
@@ -510,7 +466,7 @@ this.elements.navLinks.forEach((link, index) => {
         if (!this.elements.inputFeedback) return;
 
         const feedback = this.elements.inputFeedback;
-        
+
         if (!url || url.trim() === '') {
             feedback.classList.remove('show', 'valid', 'invalid');
             return;
@@ -519,7 +475,7 @@ this.elements.navLinks.forEach((link, index) => {
         if (this.isValidUrl(url)) {
             feedback.className = 'input-feedback valid show';
             feedback.innerHTML = '<span>✅</span> Valid URL format detected';
-            
+
             const domain = this.extractDomain(url);
             if (this.data.safe_domains.some(safeDomain => domain.includes(safeDomain))) {
                 feedback.innerHTML = '<span>🛡️</span> Recognized safe domain';
@@ -556,7 +512,7 @@ this.elements.navLinks.forEach((link, index) => {
 async analyzeUrl() {
     if (this.isAnalyzing) return;
     const url = this.elements.urlInput.value.trim();
-    
+
     if (!url || !this.isValidUrl(url)) {
         this.showToast('Please enter a valid URL', 'error');
         return;
@@ -583,7 +539,7 @@ async analyzeUrl() {
 
         // Use the result FROM THE SERVER to display results
         // The 'data' object has the structure { success: true, analysis: { level: '...', score: ... } }
-        await this.displayResults({ 
+        await this.displayResults({
             url: data.scannedUrl,
             threatLevel: data.analysis.level,
             confidence: data.analysis.score,
@@ -608,14 +564,14 @@ async analyzeUrl() {
         if (this.elements.analyzeBtn) {
             const btnText = this.elements.analyzeBtn.querySelector('.btn-text');
             if (btnText) btnText.textContent = 'Analyzing...';
-            
+
             if (this.elements.btnLoader) {
                 this.elements.btnLoader.classList.add('show');
             }
-            
+
             this.elements.analyzeBtn.disabled = true;
         }
-        
+
         if (this.elements.resultsSection) {
             this.elements.resultsSection.classList.add('hidden');
         }
@@ -625,11 +581,11 @@ async analyzeUrl() {
         if (this.elements.analyzeBtn) {
             const btnText = this.elements.analyzeBtn.querySelector('.btn-text');
             if (btnText) btnText.textContent = 'Analyze';
-            
+
             if (this.elements.btnLoader) {
                 this.elements.btnLoader.classList.remove('show');
             }
-            
+
             this.elements.analyzeBtn.disabled = false;
         }
     }
@@ -655,18 +611,18 @@ async analyzeUrl() {
     performAnalysis(inputUrl) {
         const url = inputUrl.startsWith('http') ? inputUrl : `https://${inputUrl}`;
         let urlObj;
-        
+
         try {
             urlObj = new URL(url);
         } catch (e) {
             return this.createErrorAnalysis(inputUrl);
         }
-        
+
         const domain = urlObj.hostname.toLowerCase();
         let threatLevel = 'safe';
         let confidence = 95;
         let riskScore = 10;
-        
+
         // Enhanced analysis logic
         if (this.data.malicious_patterns.some(pattern => domain.includes(pattern))) {
             threatLevel = 'malicious';
@@ -701,8 +657,8 @@ async analyzeUrl() {
     generateAnalysisFactors(urlObj, threatLevel) {
         return this.data.analysis_factors.map(factor => {
             let status = threatLevel;
-            let score = threatLevel === 'safe' ? 85 + Math.random() * 15 : 
-                       threatLevel === 'suspicious' ? 40 + Math.random() * 30 : 
+            let score = threatLevel === 'safe' ? 85 + Math.random() * 15 :
+                       threatLevel === 'suspicious' ? 40 + Math.random() * 30 :
                        10 + Math.random() * 20;
 
             return {
@@ -780,22 +736,22 @@ async analyzeUrl() {
 
     async displayResults(analysis) {
         console.log('Displaying analysis results:', analysis);
-        
+
         if (!this.elements.resultsSection) return;
 
         this.elements.resultsSection.classList.remove('hidden');
-        
+
         await this.animateThreatMeter(analysis);
         this.updateThreatInfo(analysis);
         this.populateMetrics(analysis);
         this.populateDetails(analysis);
         this.populateRecommendations(analysis);
-        
+
         // Switch to overview tab
         this.switchTab('overview');
 
         setTimeout(() => {
-            this.elements.resultsSection.scrollIntoView({ 
+            this.elements.resultsSection.scrollIntoView({
                 behavior: 'smooth',
                 block: 'start'
             });
@@ -807,7 +763,7 @@ async analyzeUrl() {
 
         const meterFill = this.elements.meterFill;
         const percentage = analysis.confidence;
-        
+
         // Set color based on threat level
         const colors = {
             safe: 'rgba(var(--color-success-rgb), 0.8)',
@@ -816,11 +772,11 @@ async analyzeUrl() {
         };
 
         meterFill.style.background = colors[analysis.threatLevel];
-        
+
         // Animate the meter
         let currentPercentage = 0;
         const targetPercentage = Math.min(percentage, 100);
-        
+
         const animateMeter = () => {
             if (currentPercentage < targetPercentage) {
                 currentPercentage += 2;
@@ -860,7 +816,7 @@ async analyzeUrl() {
         if (!this.elements.metricsGrid) return;
 
         this.elements.metricsGrid.innerHTML = '';
-        
+
         Object.entries(analysis.metrics).forEach(([key, value]) => {
             const metricCard = document.createElement('div');
             metricCard.className = 'metric-card';
@@ -876,11 +832,11 @@ async analyzeUrl() {
         if (!this.elements.detailsGrid) return;
 
         this.elements.detailsGrid.innerHTML = '';
-        
+
         analysis.factors.forEach(factor => {
             const detailItem = document.createElement('div');
             detailItem.className = 'detail-item';
-            
+
             detailItem.innerHTML = `
                 <div class="detail-icon">${factor.icon}</div>
                 <div class="detail-content">
@@ -892,7 +848,7 @@ async analyzeUrl() {
                     <div class="detail-details">${factor.details}</div>
                 </div>
             `;
-            
+
             this.elements.detailsGrid.appendChild(detailItem);
         });
     }
@@ -901,23 +857,23 @@ async analyzeUrl() {
         if (!this.elements.recommendationsList) return;
 
         this.elements.recommendationsList.innerHTML = '';
-        
+
         analysis.recommendations.forEach(rec => {
             const recItem = document.createElement('div');
             recItem.className = `recommendation-item ${rec.type}`;
-            
+
             recItem.innerHTML = `
                 <div class="rec-icon">${rec.icon}</div>
                 <div class="rec-text">${rec.text}</div>
             `;
-            
+
             this.elements.recommendationsList.appendChild(recItem);
         });
     }
 
     switchTab(tabId) {
         this.activeTab = tabId;
-        
+
         this.elements.tabBtns.forEach(btn => {
             btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
         });
@@ -956,7 +912,7 @@ async analyzeUrl() {
 
         const dataStr = JSON.stringify(reportData, null, 2);
         const dataBlob = new Blob([dataStr], { type: 'application/json' });
-        
+
         const link = document.createElement('a');
         link.href = URL.createObjectURL(dataBlob);
         link.download = `phishshield-report-${Date.now()}.json`;
@@ -978,7 +934,7 @@ async analyzeUrl() {
 
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
-        
+
         const icons = {
             success: '✅',
             error: '❌',
@@ -1002,7 +958,7 @@ async analyzeUrl() {
 
     removeToast(toast) {
         if (!toast.parentNode) return;
-        
+
         toast.style.animation = 'slideOutRight 0.3s ease-in forwards';
         setTimeout(() => {
             if (toast.parentNode) {
