@@ -1,0 +1,102 @@
+<footer class="relative bg-slate-900 text-slate-200 overflow-hidden">
+    <div class="pointer-events-none absolute -right-24 -top-20 w-72 h-72 bg-gradient-to-br from-indigo-600 via-sky-500 to-emerald-400 opacity-20 rounded-full blur-3xl animate-blob-float-1"></div>
+    <div class="pointer-events-none absolute -left-28 -bottom-24 w-80 h-80 bg-gradient-to-tr from-pink-500 via-rose-400 to-yellow-300 opacity-12 rounded-full blur-2xl animate-blob-float-2"></div>
+
+    <div class="relative z-10">
+        <div class="max-w-7xl mx-auto px-6 py-12 md:py-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="space-y-4">
+                    <a href="/" class="inline-flex items-center space-x-3">
+                        <img src="/image/logo.png" alt="PhishShield" class="w-25 h-25 rounded-md shadow-lg"/>
+                    </a>
+                    <p class="text-sm text-slate-300 max-w-md">
+                        Enterprise-grade AI-powered phishing detection. Real-time URL analysis, advanced reporting and complete privacy.
+                    </p>
+                    <div class="flex items-center space-x-3 mt-3">
+                        <a href="https://twitter.com" class="p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition transform hover:-translate-y-1" aria-label="Twitter">
+                            <i class="fab fa-twitter text-sky-400"></i>
+                        </a>
+                        <a href="https://github.com" class="p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition transform hover:-translate-y-1" aria-label="GitHub">
+                            <i class="fab fa-github text-slate-100"></i>
+                        </a>
+                        <a href="https://linkedin.com" class="p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition transform hover:-translate-y-1" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in text-blue-400"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-6 md:col-span-1">
+                    <div>
+                        <h3 class="text-sm font-medium text-slate-200 mb-3">Product</h3>
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li><a href="#analysis" class="hover:text-white transition">Analyze</a></li>
+                            <li><a href="#features" class="hover:text-white transition">Features</a></li>
+                            <li><a href="/history" class="hover:text-white transition">History</a></li>
+                            <li><a href="/feedback" class="hover:text-white transition">Feedback</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-slate-200 mb-3">Company</h3>
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li><a href="/about" class="hover:text-white transition">About</a></li>
+                            <li><a href="/privacy" class="hover:text-white transition">Privacy</a></li>
+                            <li><a href="/terms" class="hover:text-white transition">Terms</a></li>
+                            <li><a href="/contact" class="hover:text-white transition">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="md:flex md:flex-col md:items-end">
+                    <div class="w-full md:w-80">
+                        <h3 class="text-sm font-medium text-slate-200 mb-3">Stay secure — get updates</h3>
+                        <form action="/subscribe" method="POST" class="flex gap-2">
+                            <label for="footer-email" class="sr-only">Email</label>
+                            <input id="footer-email" name="email" type="email" required
+                                   class="flex-1 px-4 py-2 rounded-md bg-slate-800 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-400 transition"
+                                   placeholder="Your email address"/>
+                            <button type="submit" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sky-500 to-indigo-600 rounded-md text-white font-semibold hover:scale-105 transform transition shadow-lg">
+                                Subscribe
+                                <span class="inline-block animate-bounce">✉️</span>
+                            </button>
+                        </form>
+                        <p class="text-xs text-slate-400 mt-3">No tracking. Unsubscribe anytime.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-10 border-t border-slate-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-sm text-slate-400"> © <%= new Date().getFullYear() %> PhishShield. All Rights Reserved.</p>
+                <div class="flex items-center gap-4">
+                    <a href="/status" class="text-sm text-slate-300 hover:text-white transition">System Status</a>
+                    <a href="/docs" class="text-sm text-slate-300 hover:text-white transition">Docs</a>
+                    <a href="/security" class="text-sm text-slate-300 hover:text-white transition">Security</a>
+                </div>
+            </div>
+        </div>
+    </div> <button id="backToTop" class="fixed right-5 bottom-5 z-50 w-12 h-12 rounded-full bg-gradient-to-br from-indigo-600 to-sky-500 text-white shadow-xl flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 hover:scale-105">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+    </button>
+</footer>
+
+<script>
+    // footer small behaviors: back-to-top visibility + smooth scroll
+    (function(){
+        const btn = document.getElementById('backToTop');
+        if (!btn) return;
+
+        const showAt = 300;
+        window.addEventListener('scroll', () => {
+            if(window.scrollY > showAt) {
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+            } else {
+                btn.style.opacity = '0';
+                btn.style.pointerEvents = 'none';
+            }
+        });
+
+        btn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    })();
+</script>
