@@ -47,8 +47,6 @@ app.use(
 app.use(userRouter);
 app.use(accessRouter);
 app.use(historyRouter);
-app.use(messageRouter);
-
 app.use(errorRouter);
 
 
