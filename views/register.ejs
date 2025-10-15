@@ -6,8 +6,8 @@
   <title>Register Page</title>
  <link rel="stylesheet" href="/style1.css" />
   <link rel="stylesheet" href="/style2.css">
-  
-  
+
+
 </head>
 <body>
   <div class="login_and_register_logo">
@@ -55,13 +55,13 @@
     <p id="register-message"></p>
   </div>
 
-  
+
 </form>
 
       </div>
     </div>
   </div>
-    <script>
+<script>
 const a = [
   1234, 8988, 2332, 223, 3489, 6721, 9154, 4820, 7391, 5602,
   8417, 2935, 6748, 9182, 4376, 8093, 5264, 7629, 1845, 9501,
@@ -80,8 +80,62 @@ function getRandomValue(arr) {
 
 let generated_code = null;
 
-// Send OTP on Get Code click
-// Send OTP on Get Code click
+// Create OTP email HTML template
+function createOtpHtmlTemplate({ email, otp }) {
+  const currentYear = new Date().getFullYear();
+  const sentTime = new Date().toLocaleString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
+
+  return `
+  <div style="font-family:Poppins,Arial,sans-serif;background:#f4f7f6;padding:20px;">
+    <div style="max-width:500px;margin:auto;background:#fff;border-radius:12px;border:1px solid #e5e5e5;overflow:hidden;">
+      <div style="background:#f8f9fa;padding:40px;text-align:center;border-bottom:1px solid #dee2e6;">
+        <img src="https://phishshield.anubhavsingh.website/logo.png" alt="PhishShield Logo" style="max-width:110px;">
+      </div>
+      <div style="padding:35px 40px;text-align:center;color:#343a40;">
+        <h1 style="font-size:24px;font-weight:700;">Your Verification Code</h1>
+        <p style="color:#6c757d;">A sign-in attempt requires a verification code valid for 5 minutes.</p>
+        <div style="display:inline-block;background:#007bff;color:#fff;font-size:36px;font-weight:700;letter-spacing:6px;padding:18px 35px;border-radius:8px;margin:25px 0;">
+          ${otp}
+        </div>
+        <p style="color:#6c757d;">This code was requested for:<br><strong>${email}</strong></p>
+        <p style="color:#6c757d;margin-top:20px;">If you did not request this code, ignore this email.</p>
+      </div>
+      <div style="background:#f8f9fa;padding:25px;text-align:center;color:#6c757d;font-size:12px;border-top:1px solid #dee2e6;">
+        <p>Email sent at ${sentTime}</p>
+        <p>&copy; ${currentYear} PhishShield. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+// Send OTP using external API
+async function sendOtp(email, otp) {
+  const payload = {
+    to: email,
+    subject: "OTP by PhishShield",
+    websiteName: "PhishShield",
+    message: createOtpHtmlTemplate({ email, otp }),
+  };
+
+  try {
+    const res = await fetch("https://anubhavmail.anubhavsingh.website/sendMail", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    return data.success;
+  } catch (err) {
+    return false;
+  }
+}
+
+// Handle Get Code button click
 document.getElementById('getCodeBtn').addEventListener('click', async () => {
   const email = document.getElementById('email').value;
   const msg = document.getElementById('register-message');
@@ -92,31 +146,18 @@ document.getElementById('getCodeBtn').addEventListener('click', async () => {
     return;
   }
 
-  // Show sending... while waiting
   msg.style.color = 'blue';
   msg.textContent = 'Sending...';
 
   generated_code = getRandomValue(a);
+  const success = await sendOtp(email, generated_code);
 
-  try {
-    const res = await fetch('/send-otp', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, otp: generated_code })
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      msg.style.color = 'green';
-      msg.textContent = 'OTP sent! Check your email inbox or Spam box if exist .';
-    } else {
-      msg.style.color = 'red';
-      msg.textContent = data.error || 'Failed to send OTP. Please try again.';
-    }
-  } catch (error) {
+  if (success) {
+    msg.style.color = 'green';
+    msg.textContent = 'OTP sent! Check your email inbox or Spam folder.';
+  } else {
     msg.style.color = 'red';
-    msg.textContent = 'Network error. Please try again later.';
+    msg.textContent = 'Failed to send OTP. Please try again.';
   }
 });
 
@@ -129,44 +170,45 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   const password = e.target.password.value;
   const confirm_password = e.target.confirm_password.value;
   const code = e.target.code.value;
+  const msg = document.getElementById('register-message');
 
   if (password !== confirm_password) {
-     const msg = document.getElementById('register-message');
-   msg.style.color = 'red';
+    msg.style.color = 'red';
     msg.textContent = 'Passwords do not match';
-    e.target.confirm_password.value="";
- 
+    e.target.confirm_password.value = "";
     return;
   }
 
   if (code !== String(generated_code)) {
-  const msg = document.getElementById('register-message');
-  msg.style.color = 'red';
-  msg.textContent = 'Invalid OTP. Please try again.';
-  e.target.code.value = ""; 
-  return;
-}
+    msg.style.color = 'red';
+    msg.textContent = 'Invalid OTP. Please try again.';
+    e.target.code.value = "";
+    return;
+  }
 
+  try {
+    const res = await fetch('/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, email, password })
+    });
 
-  const res = await fetch('/register', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, email, password })
-  });
-
-  const data = await res.json();
-  if (res.ok) {
-     const msg = document.getElementById('register-message');
-   msg.style.color = 'green';
-    msg.textContent = ' Registration successful!';
-    window.location.href = '/login';
-  } else {
-     const msg = document.getElementById('register-message');
-   msg.style.color = 'red';
-    msg.textContent = data.error;
-    
+    const data = await res.json();
+    if (res.ok) {
+      msg.style.color = 'green';
+      msg.textContent = 'Registration successful!';
+      window.location.href = '/login';
+    } else {
+      msg.style.color = 'red';
+      msg.textContent = data.error || 'Registration failed.';
+    }
+  } catch (err) {
+    msg.style.color = 'red';
+    msg.textContent = 'Network error. Please try again later.';
   }
 });
 </script>
+
 </body>
 </html>
+
