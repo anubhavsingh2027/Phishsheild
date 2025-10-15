@@ -173,8 +173,9 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   const code = e.target.code.value;
   const msg = document.getElementById('register-message');
   if(globalemail!=email){
-msg.style.color = 'red';
+    msg.style.color = 'red';
     msg.textContent = 'both email are not match while otp ';
+    return;
   }
   if (password !== confirm_password) {
     msg.style.color = 'red';
