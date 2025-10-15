@@ -62,6 +62,7 @@
     </div>
   </div>
 <script>
+  let globalemail;
 const a = [
   1234, 8988, 2332, 223, 3489, 6721, 9154, 4820, 7391, 5602,
   8417, 2935, 6748, 9182, 4376, 8093, 5264, 7629, 1845, 9501,
@@ -139,7 +140,7 @@ async function sendOtp(email, otp) {
 document.getElementById('getCodeBtn').addEventListener('click', async () => {
   const email = document.getElementById('email').value;
   const msg = document.getElementById('register-message');
-
+  globalemail=email;
   if (!email) {
     msg.style.color = 'red';
     msg.textContent = 'Please enter your email id';
@@ -171,7 +172,10 @@ document.getElementById('register-form').addEventListener('submit', async (e) =>
   const confirm_password = e.target.confirm_password.value;
   const code = e.target.code.value;
   const msg = document.getElementById('register-message');
-
+  if(globalemail!=email){
+msg.style.color = 'red';
+    msg.textContent = 'both email are not match while otp ';
+  }
   if (password !== confirm_password) {
     msg.style.color = 'red';
     msg.textContent = 'Passwords do not match';
