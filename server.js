@@ -15,7 +15,6 @@ import MongoStore from 'connect-mongo';
 import userRouter from './routers/userRouter.js';
 import accessRouter from './routers/accessRouter.js'
 import historyRouter from './routers/historyRouter.js'
-import messageRouter from './routers/messageRouter.js'
 import errorRouter from './routers/ErrorRouter.js'
 
 dotenv.config();
