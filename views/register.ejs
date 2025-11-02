@@ -94,7 +94,7 @@ function createOtpHtmlTemplate({ email, otp }) {
   <div style="font-family:Poppins,Arial,sans-serif;background:#f4f7f6;padding:20px;">
     <div style="max-width:500px;margin:auto;background:#fff;border-radius:12px;border:1px solid #e5e5e5;overflow:hidden;">
       <div style="background:#f8f9fa;padding:40px;text-align:center;border-bottom:1px solid #dee2e6;">
-        <img src="https://phishshield.anubhavsingh.website/logo.png" alt="PhishShield Logo" style="max-width:110px;">
+        <img src="https://phishshield.anubhav.sbs/logo.png" alt="PhishShield Logo" style="max-width:110px;">
       </div>
       <div style="padding:35px 40px;text-align:center;color:#343a40;">
         <h1 style="font-size:24px;font-weight:700;">Your Verification Code</h1>
@@ -124,7 +124,7 @@ async function sendOtp(email, otp) {
   };
 
   try {
-    const res = await fetch("https://anubhavmail.anubhavsingh.website/sendMail", {
+    const res = await fetch("https://mailer.anubhav.sbs/sendMail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
