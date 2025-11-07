@@ -65,8 +65,11 @@ It analyzes URLs in real-time using **intelligent heuristics**, **security APIs*
 ## 📂 Project Structure
 
 PhishShield/
+
 ├─ frontend/ (views, static files)
+
 ├─ backend/ (routes, controllers, security logic)
+
 └─ README.md
 
 yaml
