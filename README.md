@@ -1,49 +1,91 @@
-🔗 Live Demo: [PhishShield on Render](https://phishshield-5lym.onrender.com/login)
+# 🛡️ PhishShield
 
-PhishShield is an advanced phishing detection and prevention tool that helps users stay safe from malicious websites. It uses smart URL analysis, machine learning heuristics, and real-time scanning to identify suspicious links and prevent phishing attacks before they cause harm.
+**PhishShield** is a smart phishing detection and prevention tool that helps users stay safe from harmful and fraudulent websites.
+It analyzes URLs in real-time using **intelligent heuristics**, **security APIs**, and **educational indicators**, ensuring users avoid unsafe links and understand phishing risks.
 
-🚀 Key Features
+---
 
-🔍 URL Scanning & Analysis – Detects whether a link is safe, suspicious, or malicious.
+## 🔗 Live Demo
 
-⚡ Real-Time Threat Detection – Instantly checks URLs using intelligent algorithms.
+- https://phishshield.nav-code.com/
 
-🧠 Educational Insights – Teaches users about phishing tactics and how to identify them.
+### 🖼️ Preview
+<p align="center">
+  <img src="https://phishshield.nav-code.com/image/websiteImg.png" alt="PhishShield Preview" width="850px" />
+</p>
 
-🖥️ User-Friendly Interface – Clean and simple UI for both beginners and tech-savvy users.
+---
 
-🔒 Secure Backend – Built with a strong Node.js & Express backend for reliable performance.
+## 🚀 Key Features
 
-📊 Detailed Reports – Provides clear results to help users make safe decisions online.
+| Feature | Description |
+|--------|-------------|
+| 🔍 **URL Scanning & Analysis** | Automatically checks whether a link is safe, suspicious, or malicious |
+| ⚡ **Real-Time Threat Detection** | Uses fast and intelligent rule-based threat evaluation |
+| 🧠 **Educational Insights** | Helps users understand *why* a link is marked dangerous |
+| 🖥️ **Simple & Clean User Interface** | Designed for both beginners and cybersecurity enthusiasts |
+| 🔒 **Secure Backend** | Built on a strong Node.js + Express.js backend |
+| 📊 **Detailed Result Reports** | Displays clear verdicts with explanation to help users make informed decisions |
 
-🛠️ Tech Stack
+---
 
-Frontend: EJS, TailwindCSS, JavaScript
+## 🛠️ Tech Stack
 
-Backend: Node.js, Express.js
+| Layer | Technologies Used |
+|------|-------------------|
+| **Frontend** | EJS, Tailwind CSS, JavaScript |
+| **Backend** | Node.js, Express.js |
+| **Database** | MongoDB (Mongoose ORM) |
+| **Security APIs** | Google Safe Browsing API, Custom heuristic analysis |
+| **Authentication** | Session-based Auth |
+| **Deployment** | Render |
 
-Database: MongoDB (Mongoose ORM)
+---
 
-Security & APIs: Google Safe Browsing API, Session-based Authentication
+## 🎯 Use Cases
 
-Deployment: Render
+✅ Check if a suspicious email/SMS link is safe
+✅ Teach users how phishing links trick people
+✅ Protect families, businesses, and institutions
+✅ Add an extra layer of browsing safety
 
-🎯 Use Cases
+---
 
-✅ Check if a suspicious link from email/SMS is safe
+## 📌 Future Enhancements
 
-✅ Educate users about phishing techniques
+| Planned Feature | Description |
+|----------------|-------------|
+| 🤖 **AI/ML Phishing Prediction Model** | Train a model to identify phishing patterns more accurately |
+| 📱 **Android / iOS Mobile App** | Quick scanning from smartphones |
+| 🧑‍💻 **Browser Extension** | Automatic URL scanning while browsing |
+| ✉️ **Email Auto Scanner Integration** | Detect phishing in inboxes instantly |
 
-✅ Protect individuals and businesses from online scams
+---
 
-✅ Provide an extra security layer for safe browsing
+## 📂 Project Structure
 
-📌 Future Enhancements
+PhishShield/
+├─ frontend/ (views, static files)
+├─ backend/ (routes, controllers, security logic)
+└─ README.md
 
-🤖 AI/ML-based phishing detection model
+yaml
+Copy code
 
-📱 Mobile app version for Android/iOS
+---
 
-🧑‍💻 Browser extension for real-time URL scanning
+## 📧 Contact & Support
 
-🔗 Integration with email services to auto-detect phishing attempts
+**Developer:** Anubhav Singh
+For collaboration or suggestions: *(anubhavsingh2027@gmail.com)*
+
+---
+
+## ⭐ Contributions
+
+If you find this useful, please **star this repository ⭐** and contribute through issues or PRs.
+
+---
+
+### 🙏 Thank You for Using *PhishShield*
+**Stay Safe. Stay Aware. Browse Smart.**
